@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Task - Admin</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+  <header>
+    <nav id="navbar">
+      <ul>
+        <li><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>Edit Task</h2>
+    <div id="alertContainer">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="popup-alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    
+    <form id="editTaskForm" method="POST" onsubmit="submitTaskForm(event)">
+      {% csrf_token %}
+
+      <label for="taskTitle">Task Title:</label>
+      <input type="text" id="taskTitle" name="taskTitle" value="{{ task.title }}" required />
+
+      <label for="teacherName">Teacher Name:</label>
+      <select id="teacherName" name="teacherName" required>
+        {% for teacher in teachers %}
+          <option value="{{ teacher.id }}" {% if teacher.id == task.assigned_to.id %}selected{% endif %}>
+            {{ teacher.username }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <label for="priority">Priority:</label>
+      <select id="priority" name="priority" required>
+        <option value="">Select Priority</option>
+        <option value="low" {% if task.priority == "low" %}selected{% endif %}>Low</option>
+        <option value="medium" {% if task.priority == "medium" %}selected{% endif %}>Medium</option>
+        <option value="high" {% if task.priority == "high" %}selected{% endif %}>High</option>
+      </select>
+
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required>{{ task.description }}</textarea>
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </main>
+  <footer>
+    <p>&copy; 2025 School Task Assignment</p>
+  </footer>
+  
+  <script>
+    function submitTaskForm(event) {
+      event.preventDefault();
+      
+      const form = document.getElementById('editTaskForm');
+      const formData = new FormData(form);
+      
+      fetch('', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showMessage(data.message, 'success');
+          
+          
+          setTimeout(() => {
+            window.location.href = '{% url "admin_dashboard" %}';
+          }, 1000);
+        } else {
+          showMessage(data.message || 'Error updating task', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showMessage('Error updating task', 'error');
+      });
+    }
+    
+    function showMessage(message, type) {
+      const alertContainer = document.getElementById('alertContainer');
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `popup-alert alert-${type}`;
+      alertDiv.textContent = message;
+      
+      
+      alertContainer.innerHTML = '';
+      
+      alertContainer.appendChild(alertDiv);
+      
+      
+      setTimeout(() => {
+        alertDiv.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

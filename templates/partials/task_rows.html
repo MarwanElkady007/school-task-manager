@@ -1,0 +1,31 @@
+{% for task in tasks %}
+<tr id="task-row-{{ task.id }}">
+  <td>{{ task.id }}</td>
+  <td><strong>{{ task.title }}</strong></td>
+  <td>
+    <span class="priority-label priority-{{ task.priority|lower }}"
+      >{{ task.priority|capfirst }}</span
+    >
+  </td>
+  <td>{{ task.description }}</td>
+  <td><strong>{{ task.created_by.username }}</strong></td>
+  <td class="action-buttons">
+    <a href="{% url 'teacher_task_details' task.id %}" class="btn btn-view"
+      >View</a
+    >
+    <button
+      type="button"
+      class="btn btn-complete"
+      onclick="openCompleteModal('{{ task.id }}')"
+    >
+      Complete
+    </button>
+  </td>
+</tr>
+{% empty %}
+<tr>
+  <td colspan="6" style="text-align: center; font-weight: 500; padding: 1rem">
+    No tasks found for this priority.
+  </td>
+</tr>
+{% endfor %}

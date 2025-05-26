@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add New Task - Admin</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+  <header>
+    <nav id="navbar">
+      <ul>
+  <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+  <li><a href="{% url 'admin_add_task' %}">Add Task</a></li>
+  <li><a href="{% url 'logout' %}">Logout</a></li>
+</ul>
+    </nav>
+  </header>
+  <main>
+    <h2>Add New Task</h2>
+    <form id="addTaskForm" method="POST">
+      {% csrf_token %}
+      <label for="taskTitle">Task Title:</label>
+      <input type="text" id="taskTitle" name="taskTitle" required />
+
+      <label for="teacherName">Teacher Name:</label>
+<select id="teacherName" name="teacherName" required>
+  {% for teacher in teachers %}
+    <option value="{{ teacher.id }}">{{ teacher.username }}</option>
+  {% endfor %}
+</select>
+
+      <label for="priority">Priority:</label>
+      <select id="priority" name="priority" required>
+        <option value="">Select Priority</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required></textarea>
+
+      <button type="submit">Add Task</button>
+    </form>
+  </main>
+  <footer>
+    <p>&copy; 2025 School Task Assignment</p>
+  </footer>
+  <script src="{% static 'script.js' %}"></script>
+</body>
+</html>

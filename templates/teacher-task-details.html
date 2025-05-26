@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Details - School Task Assignment</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+  <header>
+    <nav id="navbar">
+      <ul>
+        <li><a href="{% url 'teacher_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'teacher_completed' %}">Completed Tasks</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Task Details</h2>
+    <div class="task-details-container" style="background-color: var(--white-color); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--shadow); max-width: 700px; margin: 0 auto;">
+      <div id="taskDetails" class="mb-4">
+        <p><strong>Title:</strong> {{ task.title }}</p>
+        <p><strong>Assigned Teacher:</strong> {{ task.assigned_to.username }}</p>
+        <p><strong>Priority:</strong> <span class="priority-{{ task.priority }}">{{ task.priority|capfirst }}</span></p>
+        <p><strong>Description:</strong> {{ task.description|default:"-" }}</p>
+        <p><strong>Status:</strong>
+          {% if task.is_completed %}
+            <span class="priority-low">Completed</span>
+          {% else %}
+            <span class="priority-high">Pending</span>
+          {% endif %}
+        </p>
+        <p><strong>Created By:</strong> {{ task.created_by.username }}</p>
+        <p><strong>Created At:</strong> {{ task.created_at|date:"d M Y \\a\\t h:i A" }}</p>
+        {% if task.updated_at %}
+          <p><strong>Last Updated:</strong> {{ task.updated_at|date:"d M Y \\a\\t h:i A" }}</p>
+        {% endif %}
+      </div>
+      <a href="{% url 'teacher_dashboard' %}" class="btn-backto-dashboard">Back to Dashboard</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 School Task Assignment</p>
+  </footer>
+</body>
+</html>

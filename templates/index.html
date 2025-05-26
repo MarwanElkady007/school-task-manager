@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Task Assignment - Home</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}" />
+</head>
+<body>
+  <header>
+    <nav id="navbar">
+      
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+</ul>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>Welcome to School Task Assignment</h1>
+      <p>
+        A simple application created to manage and track school tasks – whether you're an admin assigning tasks or a teacher marking them as completed.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 School Task Assignment</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
